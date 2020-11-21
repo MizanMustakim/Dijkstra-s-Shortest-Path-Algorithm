@@ -1,1 +1,3 @@
-# Dijkstra-s-Shortest-Path-Algorithm
+# Dijkstra's Shortest Path Algorithm
+
+Inspired from **GeeksforGeeks**
