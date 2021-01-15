@@ -23,7 +23,7 @@ for i in range(n):
 ## First to make a function about measuring the distance
 ## Then checking whether the distance between two nodes is greater than 0.003
 ## And then wherever we got grater than 0.003, we make it 0. We just assume that
-## the nodes are kind of adjoint nodes. So that we can get at most accurate shortest path
+## the nodes are kind of adjacent nodes. So that we can get at most accurate shortest path
 ## and also the distance.
 def distance(p1,p2):
     squared_dist = np.sum((p1-p2)**2, axis=0)
