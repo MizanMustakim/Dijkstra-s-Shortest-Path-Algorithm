@@ -67,5 +67,5 @@ class DijkstraAlgorithm:
                     if dist[u] + graph[u][i] < dist[i]: # and if the total weight of path from source to destination is less than the current value of dist[i]
                         dist[i] = dist[u] + graph[u][i]
                         parent[i] = u
-        return self.printSolution(dist, parent, src)    # Return the constructed distance 
+        self.printSolution(dist, parent, src)    # Return the constructed distance 
         
