@@ -10,9 +10,7 @@ x1, x2 = 0.0001, 0.005
 y1, y2 = 0.0001, 0.005
 z1, z2 = 0.0001, 0.005
 
-xs = []
-ys = []
-zs = []
+xs, ys, zs = [],[],[]
 for i in range(n):
     xs.append((x2 - x1)*random.random() + x1)
     ys.append((y2 - y1)*random.random() + y1)
