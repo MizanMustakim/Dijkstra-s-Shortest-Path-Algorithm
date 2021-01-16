@@ -36,7 +36,7 @@ for i in range(len(xs)):
     for j in range(len(xs)):
         p1 = np.array([xs[i], ys[i], zs[i]])
         p2 = np.array([xs[j], ys[j], zs[j]])
-        if distance(p1,p2) >= .002:
+        if distance(p1,p2) >= .004:
             graph[i].append(0)
         else:
             graph[i].append(distance(p1,p2))
@@ -118,10 +118,6 @@ class DijkstraAlgoWithDistance:
                 minimum = dist[i] 
                 min_index = i
         return min_index
-    
-    def printSolution(self, distance, parent, src, des):
-        #print(distance[des-1])
-        D.append(distance[des-1])
         
     def dijkstraWithDistance(self, graph, src, des):
         s = src - 1
@@ -153,7 +149,8 @@ class DijkstraAlgoWithDistance:
                     if dist[u] + graph[u][i] < dist[i]: # and if the total weight of path from source to destination is less than the current value of dist[i]
                         dist[i] = dist[u] + graph[u][i]
                         parent[i] = u
-        self.printSolution(dist, parent, src, des)
+        # self.printSolution(dist, parent, src, des)
+        D.append(dist[des-1])
 
 
 ### Now it's time to call our class and it's methods.
@@ -166,9 +163,15 @@ def main():
     global graph
     
     x = DijkstraAlgoWithPath()
-    source = int(input("\nEnter the source: "))   # Take input of the source value
     des = zs.index(max(zs))+1
-    print("The Shortest Path is: ")
+    print("\n----------Start 3D Simulation Model Testing----------")
+    print('''\n\nHere our simulation will declare the destination
+node by itself randomly. The top node of the surface 
+will be choosen as the destination node.''')
+    print("\n\nThe target destination node is: ", des)
+    source = int(input("\nEnter the source: "))   # Take input of the source value
+    
+    print("\nThe Shortest Path is: ")
     x.dijkstraWithPath(graph, source, des)
     
     m = DijkstraAlgoWithDistance()
@@ -178,13 +181,11 @@ def main():
     fig = plt.figure()
     ax = fig.add_subplot(111,projection='3d')
 
-        
-    a = [ax.plot(xs[i], ys[i], zs[i], "g*") for i in range(n) if zs[i] == max(zs)]
-    b = [ax.plot(xs[i], ys[i], zs[i], "r.") for i in range(n) if zs[i] != max(zs)]
 
-    xl = []
-    yl = []
-    zl = []
+    [ax.plot(xs[i], ys[i], zs[i], "g*") for i in range(n) if zs[i] == max(zs)]
+    [ax.plot(xs[i], ys[i], zs[i], "r.") for i in range(n) if zs[i] != max(zs)] 
+
+    xl, yl, zl= [],[],[]
     for j in M:
         xl.append(xs[j-1])
         yl.append(ys[j-1])
@@ -192,7 +193,6 @@ def main():
     
     ax.plot(xl, yl, zl, "k:")
     
-
     ax.legend(["Destination Node","Source Node"])
 
     ax.set_xlim3d([0.0001, 0.005])
