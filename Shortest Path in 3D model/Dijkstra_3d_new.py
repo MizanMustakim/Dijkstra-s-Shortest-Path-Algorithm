@@ -255,12 +255,12 @@ def plotting(xl_fat, yl_fat, zl_fat, xl_skin, yl_skin, zl_skin):
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
 
-    [ax.plot(xs_fat[i], ys_fat[i], zs_fat[i], "ro") for i in range(50) if zs_fat[i] == max(zs_fat)]
-    [ax.plot(xs_skin[i], ys_skin[i], zs_skin[i], "mo") for i in range(50) if zs_skin[i] == max(zs_skin)]
+    [ax.plot(xs_skin[i], ys_skin[i], zs_skin[i], "ro") for i in range(50) if zs_skin[i] == max(zs_skin)]
+    [ax.plot(xs_fat[i], ys_fat[i], zs_fat[i], "mo") for i in range(50) if zs_fat[i] == max(zs_fat)]
     [ax.plot(xs_fat[i], ys_fat[i], zs_fat[i], "g.") for i in range(50) if zs_fat[i] != max(zs_fat)]
     [ax.plot(xs_skin[i], ys_skin[i], zs_skin[i], "b.") for i in range(50) if zs_skin[i] != max(zs_skin)]
 
-    ax.legend(["Destination Node (Fat)","Destination Node (Skin)"])
+    ax.legend(["Nano Router-1","Nano Router-2"])
 
     ax.plot(xl_fat, yl_fat, zl_fat, "k-")
     ax.plot(xl_skin, yl_skin, zl_skin, "k-")
