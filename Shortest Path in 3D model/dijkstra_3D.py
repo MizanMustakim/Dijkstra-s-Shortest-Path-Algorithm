@@ -174,7 +174,7 @@ will be choosen as the destination node.''')
     
     m = DijkstraAlgoWithDistance()
     m.dijkstraWithDistance(graph, M[0], M[-1])
-    print("\nThe total distance of this shortest path is: {:.4f}m".format(sum(D)))
+    print("\nThe total distance of this shortest path is: {:.4f} m".format(sum(D)))
     
     fig = plt.figure()
     ax = fig.add_subplot(111,projection='3d')

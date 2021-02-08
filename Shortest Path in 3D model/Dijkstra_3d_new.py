@@ -22,16 +22,17 @@ class Node:
             ys.append((y2 - y1)*random.random() + y1)
             zs.append((z2 - z1)*random.random() + z1)
 
+        xs.sort()
         graph_fat = []
         for i in range(int(n)):
             graph_fat.append([])
             for j in range(int(n)):
                 p1 = np.array([xs[i], ys[i], zs[i]])
                 p2 = np.array([xs[j], ys[j], zs[j]])
-                if self.distance(p1,p2) >= 3:
-                    graph_fat[i].append(0)
-                else:
+                if self.distance(p1,p2) < 3:
                     graph_fat[i].append(self.distance(p1,p2))
+                else:
+                    graph_fat[i].append(0)
         graph_fat = np.array(graph_fat)
 
         return xs, ys, zs, graph_fat
@@ -49,16 +50,17 @@ class Node:
             ys.append((y2 - y1)*random.random() + y1)
             zs.append((z2 - z1)*random.random() + z1)
 
+        xs.sort()
         graph_skin = []
         for i in range(int(n)):
             graph_skin.append([])
             for j in range(int(n)):
                 p1 = np.array([xs[i], ys[i], zs[i]])
                 p2 = np.array([xs[j], ys[j], zs[j]])
-                if self.distance(p1,p2) >= 3:
-                    graph_skin[i].append(0)
-                else:
+                if self.distance(p1,p2) < 3:
                     graph_skin[i].append(self.distance(p1,p2))
+                else:
+                    graph_skin[i].append(0)
         graph_skin = np.array(graph_skin)
 
         return xs, ys, zs, graph_skin
@@ -261,6 +263,9 @@ def plotting(xl_fat, yl_fat, zl_fat, xl_skin, yl_skin, zl_skin):
     [ax.plot(xs_skin[i], ys_skin[i], zs_skin[i], "b.") for i in range(50) if zs_skin[i] != max(zs_skin)]
 
     ax.legend(["Nano Router-1","Nano Router-2"])
+
+    ax.plot(xs_fat, ys_fat, zs_fat, "y:")
+    ax.plot(xs_skin, ys_skin, zs_skin, "y:")
 
     ax.plot(xl_fat, yl_fat, zl_fat, "k-")
     ax.plot(xl_skin, yl_skin, zl_skin, "k-")
