@@ -228,7 +228,7 @@ def main():
         plt.show()
     
     n = short_dis.index(min(short_dis))
-    print("\n\nFinally, the selected destination node is {}\nAnd the shortest distance from the source to the destination is {:.4f}mm.".format(s[n], min(short_dis)))
+    print("\n\nFinally, the selected destination node is {}\nAnd the shortest distance from the source to the destination is {:.4f}mm.".format(s[n]+1, min(short_dis)))
     
 if __name__ == '__main__':
 
