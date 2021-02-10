@@ -170,11 +170,9 @@ def main():
         
         fat = []
         skin = []
-        for i in M:
-            if i > 50:
-                skin.append(i)
-            else:
-                fat.append(i)
+        skin.extend(list(filter(lambda data: data > 50, M)))
+        fat.extend(list(filter(lambda data: data <= 50, M)))
+
         print("\nThe nodes in  Fat tissues are: ", *fat)
         x.dijkstraWithDistance(graph, fat[0], fat[-1])
         print("The nodes in  Fat tissues are: ", *skin)
