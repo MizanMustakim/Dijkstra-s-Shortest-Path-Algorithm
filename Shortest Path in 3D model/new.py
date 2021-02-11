@@ -2,6 +2,8 @@ import numpy as np
 import random
 import matplotlib.pyplot as plt
 
+
+
 class Node:
     
     def distance(self,p1,p2):
@@ -55,13 +57,15 @@ xs, ys, zs = a[0], a[1], a[2]   # axis points of fat nodes
 graph = a[3]
 
 
-'''Djkstra Algorithm implementation on the nodes'''
 
-M = []  # The empty list to store the minimum distances for shortest path
-D = []  # The empty list to store the distances between the nodes.
 class DijkstraAlgoWithPath:
-    global M
-    global D
+
+    def __init__(self):
+
+        '''Initializing the instances'''
+
+        self.min_dis_index = []
+        self.short_dis = []
     
     def minDistance(self, dist, queue):
         minimum = float("Inf")
@@ -75,22 +79,32 @@ class DijkstraAlgoWithPath:
 
     def printPath(self, parent, j):
         if parent[j] == -1:                 # If 'j' is the source
-            print (j+1, end="  ")
-            M.append(j+1)
+            # print (j+1, end="  ")
+            self.min_dis_index.append(j+1)
             return 0
         self.printPath(parent, parent[j])   #If 'j' is not the source, call the recursive function
-        M.append(j+1)
-        print (j+1, end="  ")
+        self.min_dis_index.append(j+1)
+        # print (j+1, end="  ")
+
+    def distance(self):
+        '''Return the Distance of the measured path'''
+
+        return self.short_dis
+
+    def path(self):
+        '''Return the Shortest Path'''
+
+        return self.min_dis_index
 
     def dijkstraWithPath(self, graph, src, des):
-        s = src - 1
+        source = src - 1
         row = len(graph)
         col = len(graph[0])
         
         dist = [float('Infinity')] * row    # initializing all distances are inifinity
         parent = [-1] * row                 # The parent array where to store the shortest path tree
         
-        dist[s] = 0                         # Distance of source from itself is zero
+        dist[source] = 0                         # Distance of source from itself is zero
         
         q = []                              # An empty list to store all vertices in queue
         for i in range(row):
@@ -113,45 +127,21 @@ class DijkstraAlgoWithPath:
                         dist[i] = dist[u] + graph[u][i]
                         parent[i] = u
 
-        self.printPath(parent, des-1)
+        self.short_dis.append(dist[des-1])      #The measured Distance
+        return self.printPath(parent, des-1)    
+        
+        
 
-    def dijkstraWithDistance(self, graph, src, des):
-        s = src - 1
-        row = len(graph)
-        col = len(graph[0])
-        
-        dist = [float('Infinity')] * row    # initializing all distances are inifinity
-        parent = [-1] * row                 # The parent array where to store the shortest path tree
-        
-        dist[s] = 0                         # Distance of source from itself is zero
-        
-        q = []                              # An empty list to store all vertices in queue
-        for i in range(row):
-            q.append(i)
-        
-        # Find the shortest path for all vertices
-        while q:
-            # Select the minimum distance vertex 
-            # from the set of vertices 
-            # which are still in the queue
-            u = self.minDistance(dist, q)
-            q.remove(u)     # Now remove the minimum distance element which already got
-            
-            # Consider the vertices which are still in the queue,
-            # update the distance and parent index of the adjacent vertices
-            # which are selected 
-            for i in range(col):
-                if graph[u][i] and i in q:  # If dist[i] in the queue
-                    if dist[u] + graph[u][i] < dist[i]: # and if the total weight of path from source to destination is less than the current value of dist[i]
-                        dist[i] = dist[u] + graph[u][i]
-                        parent[i] = u
-                        
-        D.append(dist[des-1])
+
 
 def main():
     global graph
     
     short_dis = []
+
+    x = DijkstraAlgoWithPath()
+    M = x.path()
+    D = x.distance()
 
     s = sorted(range(len(zs)), key=lambda i: zs[i], reverse=True)[:5]
     source = int(input("\nEnter the source node: "))   # Take input of the source value
@@ -160,23 +150,32 @@ def main():
 
         print(f"\n*** Simulation with top node {index+1} ***")
 
-        x = DijkstraAlgoWithPath()
+        
         des = value + 1
+        x.dijkstraWithPath(graph, source, des)
         
         print("\nThe target destination node is: ", des)
         
-        print("The Shortest Path is: ")
-        x.dijkstraWithPath(graph, source, des)
+        print("The Shortest Path is: ", *M)
+        
         
         fat = []
         skin = []
         skin.extend(list(filter(lambda data: data > 50, M)))
         fat.extend(list(filter(lambda data: data <= 50, M)))
 
-        print("\nThe nodes in  Fat tissues are: ", *fat)
-        x.dijkstraWithDistance(graph, fat[0], fat[-1])
-        print("The nodes in  Fat tissues are: ", *skin)
-        x.dijkstraWithDistance(graph, skin[0], skin[-1])
+        M.clear();D.clear()
+
+
+
+        '''Separting the path into two types of nodes in between Fat and Skin medium'''
+
+        x.dijkstraWithPath(graph, fat[0], fat[-1])
+        print("\nThe nodes in  Fat tissue are: ", *fat)
+
+        x.dijkstraWithPath(graph, skin[0], skin[-1])
+        print("The nodes in  Skin tissue are: ", *skin)
+        
         
         dis = D[0] + D[1] * 1.471429    #Calculating with distance relation.
         short_dis.append(dis)
