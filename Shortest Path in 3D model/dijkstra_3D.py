@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import matplotlib.pyplot as plt
+import DijkstraAlgo as da
 
 
 n = 50  # Node Number
@@ -42,125 +43,22 @@ graph = np.array(graph)
 
 
 
-## Now Get start with Dijkstra Algorithm
-## to get the shortest path and distance
-## First building class for our algorithm
-
-M = []  # The empty list to store the minimum distances for shortest path
-D = []  # The empty list to store the distances between the nodes.
-class DijkstraAlgoWithPath:
-    global M
-    
-    def minDistance(self, dist, queue):
-        minimum = float("Inf")
-        min_index = -1
-        
-        for i in range(len(dist)):
-            if dist[i] < minimum and i in queue:
-                minimum = dist[i] 
-                min_index = i
-        return min_index
-    
-    def printPath(self, parent, j):
-        if parent[j] == -1:                 # If 'j' is the source
-            print (j+1, end="  ")
-            M.append(j+1)
-            return 0
-        self.printPath(parent, parent[j])   #If 'j' is not the source, call the recursive function
-        M.append(j+1)
-        print (j+1, end="  ")
-        
-
-
-    def dijkstraWithPath(self, graph, src, des):
-        s = src - 1
-        row = len(graph)
-        col = len(graph[0])
-        
-        dist = [float('Infinity')] * row    # initializing all distances are inifinity
-        parent = [-1] * row                 # The parent array where to store the shortest path tree
-        
-        dist[s] = 0                         # Distance of source from itself is zero
-        
-        q = []                              # An empty list to store all vertices in queue
-        for i in range(row):
-            q.append(i)
-        
-        # Find the shortest path for all vertices
-        while q:
-            # Select the minimum distance vertex 
-            # from the set of vertices 
-            # which are still in the queue
-            u = self.minDistance(dist, q)
-            q.remove(u)     # Now remove the minimum distance element which already got
-            
-            # Consider the vertices which are still in the queue,
-            # update the distance and parent index of the adjacent vertices
-            # which are selected 
-            for i in range(col):
-                if graph[u][i] and i in q:  # If dist[i] in the queue
-                    if dist[u] + graph[u][i] < dist[i]: # and if the total weight of path from source to destination is less than the current value of dist[i]
-                        dist[i] = dist[u] + graph[u][i]
-                        parent[i] = u
-        self.printPath(parent, des-1)
-
-class DijkstraAlgoWithDistance:
-    global D
-    
-    def minDistance(self, dist, queue):
-        minimum = float("Inf")
-        min_index = -1
-        
-        for i in range(len(dist)):
-            if dist[i] < minimum and i in queue:
-                minimum = dist[i] 
-                min_index = i
-        return min_index
-        
-    def dijkstraWithDistance(self, graph, src, des):
-        s = src - 1
-        row = len(graph)
-        col = len(graph[0])
-        
-        dist = [float('Infinity')] * row    # initializing all distances are inifinity
-        parent = [-1] * row                 # The parent array where to store the shortest path tree
-        
-        dist[s] = 0                         # Distance of source from itself is zero
-        
-        q = []                              # An empty list to store all vertices in queue
-        for i in range(row):
-            q.append(i)
-        
-        # Find the shortest path for all vertices
-        while q:
-            # Select the minimum distance vertex 
-            # from the set of vertices 
-            # which are still in the queue
-            u = self.minDistance(dist, q)
-            q.remove(u)     # Now remove the minimum distance element which already got
-            
-            # Consider the vertices which are still in the queue,
-            # update the distance and parent index of the adjacent vertices
-            # which are selected 
-            for i in range(col):
-                if graph[u][i] and i in q:  # If dist[i] in the queue
-                    if dist[u] + graph[u][i] < dist[i]: # and if the total weight of path from source to destination is less than the current value of dist[i]
-                        dist[i] = dist[u] + graph[u][i]
-                        parent[i] = u
-        # self.printSolution(dist, parent, src, des)
-        D.append(dist[des-1])
-
-
-### Now it's time to call our class and it's methods.
-### First, we make a main function
-### Then taking input from user on console,
-### Calling our classes and methods.
-### Plotting our desired path on 3D interface.
+'''Now Get start with Dijkstra Algorithm
+To get the shortest path and distance, 
+First, import DijkstraAlgo.
+Then taking input from user on console,
+Calling our classes and methods.
+Plotting our desired path on 3D interface.
+'''
 
 def main():
     global graph
     
-    x = DijkstraAlgoWithPath()
+    x = da.DijkstraAlgorithm()
+
+    M = x.path()        #Node list of shortest path
+    D = x.distance()    #Distance
+
     des = zs.index(max(zs))+1
     print("\n----------Start 3D Simulation Model Testing----------")
     print('''\n\nHere our simulation will declare the destination
@@ -172,9 +70,9 @@ will be choosen as the destination node.''')
     print("\nThe Shortest Path is: ")
     x.dijkstraWithPath(graph, source, des)
     
-    m = DijkstraAlgoWithDistance()
-    m.dijkstraWithDistance(graph, M[0], M[-1])
-    print("\nThe total distance of this shortest path is: {:.4f} m".format(sum(D)))
+
+    x.dijkstraWithPath(graph, M[0], M[-1])
+    print("\nThe total distance of this shortest path is: {:.4f} m".format(*D))
     
     fig = plt.figure()
     ax = fig.add_subplot(111,projection='3d')
